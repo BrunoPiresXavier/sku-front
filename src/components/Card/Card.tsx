@@ -18,24 +18,56 @@ export function Card(props: {
 
   const rule = rules[data.status as keyof typeof rules];
 
-  async function clickStatus(id: string, status: string) {
-    const result = await updateStatus(id, status);
-    setData(result);
+  const getStatusLabel = (status: string): string => {
+    switch (status) {
+      case "PRE_CADASTRO":
+        return "Pre cadastro";
+      case "CADASTRO_COMPLETO":
+        return "Cadastro completo";
+      case "ATIVO":
+        return "Ativo";
+      case "DESATIVADO":
+        return "Desativado";
+      case "CANCELADO":
+        return "Cancelado";
+      default:
+        return status;
+    }
+  };
+
+  async function handleStatusChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const newStatus = e.target.value;
+    if (newStatus && newStatus !== data.status) {
+      const result = await updateStatus(data.id, newStatus);
+      setData(result);
+    }
   }
+
+  const getStatusColor = (status: string): string => {
+    switch (status) {
+      case "PRE_CADASTRO":
+        return "#f59e0b";
+      case "CADASTRO_COMPLETO":
+        return "#3b82f6";
+      case "ATIVO":
+        return "#10b981";
+      case "DESATIVADO":
+        return "#ef4444";
+      case "CANCELADO":
+        return "#6b7280";
+      default:
+        return "#6b7280";
+    }
+  };
 
   async function handleUpdateSku(skuData: {
     description: string;
     commercialDescription: string;
     sku: string;
   }) {
-    try {
-      await updateSku(data.id, skuData);
-      setData(await findById(data.id));
-      setShowSkuForm(false);
-    } catch (error) {
-      console.error("Erro ao criar SKU:", error);
-      alert("Erro ao criar SKU. Tente novamente.");
-    }
+    await updateSku(data.id, skuData);
+    setData(await findById(data.id));
+    setShowSkuForm(false);
   }
 
   const handleClick = () => {
@@ -63,19 +95,33 @@ export function Card(props: {
         </div>
       </div>
       <div className={styles.platform}>
-        {rule.statusAllowed?.map((status: string) => (
-          <button
-            className={styles.add}
-            onClick={(e) => {
-              clickStatus(data.id, status);
-              e.stopPropagation();
-            }}
-            key={status}
+        <p
+          className={styles.status}
+          style={{ backgroundColor: getStatusColor(data.status) }}
+        >
+          {getStatusLabel(data.status)}
+        </p>
+        {rule?.statusAllowed && rule.statusAllowed.length > 0 ? (
+          <select
+            className={styles.statusSelect}
+            value=""
+            onChange={handleStatusChange}
+            onClick={(e) => e.stopPropagation()}
           >
-            {status}
-          </button>
-        ))}
-        <p className={styles.status}>{data.status}</p>
+            <option value="" disabled>
+              Alterar Status
+            </option>
+            {rule?.statusAllowed?.map((status: string) => (
+              <option
+                key={status}
+                value={status}
+                style={{ backgroundColor: getStatusColor(status) }}
+              >
+                {getStatusLabel(status)}
+              </option>
+            ))}
+          </select>
+        ) : null}
       </div>
 
       {showSkuForm && (
@@ -90,7 +136,7 @@ export function Card(props: {
             title: "Editar SKU",
             submitLabel: "Salvar Alterações",
           }}
-          editablefields={rule.editablefields}
+          editablefields={rule?.editablefields || []}
         />
       )}
     </div>

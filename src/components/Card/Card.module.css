@@ -1,6 +1,7 @@
 .card {
   background-color: #1f2937;
-  display: flex;
+  display: grid;
+  grid-template-columns: 3fr 1fr auto;
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
@@ -38,6 +39,8 @@
   padding-left: 1rem;
   min-width: 0;
   flex: 1 1 0;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .card .leftCard .cardLeftContent .skuViewers {
@@ -51,7 +54,10 @@
   align-items: center;
   gap: 0.3rem;
   margin: 5px 5px 5px 0;
-  max-width: 50rem;
+  max-width: 40rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 600px) {
@@ -72,6 +78,10 @@
   font-size: 1.5rem;
   font-weight: 100;
   color: white;
+  max-width: 40rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .card .leftCard .cardLeftContent p {
@@ -80,24 +90,35 @@
 
 .card .platform {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.card .platform .statusSelect {
+  background-color: #374151;
+  border: #9ca3af 1px solid;
+  border-radius: 4px;
+  color: #d6d6d6;
+  padding: 0.4rem;
+  font-size: 1rem;
+  font-family: inherit;
+  min-width: 11.25rem;
+  width: 11.25rem;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.card .platform .status {
+  color: white;
+  font-weight: bold;
 }
 
 .card .platform p {
   color: rgb(214, 214, 214);
   padding: 0.2rem 0.5rem;
   border-radius: 16px;
-}
-
-.statusOnline {
-  background-color: #14532d;
-  color: #d6d6d6;
-}
-
-.status {
-  background-color: #4b5563;
-  color: #d6d6d6;
 }
 
 .card .add {

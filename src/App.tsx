@@ -37,11 +37,14 @@ function App() {
     commercialDescription: string;
     sku: string;
   }) {
-    setLoading(true);
     try {
+      setLoading(true);
       await createSku(skuData);
       setShowSkuForm(false);
       await fetchData();
+    } catch (error) {
+      console.error("Erro ao criar SKU:", error);
+      alert("Erro ao criar SKU. Tente novamente.");
     } finally {
       setLoading(false);
     }

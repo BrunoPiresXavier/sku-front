@@ -1,12 +1,27 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import styles from "./SkuForm.module.css";
 
+const skuFormSchema = z.object({
+  description: z
+    .string()
+    .min(3, "Descrição deve ter pelo menos 3 caractere")
+    .max(100, "Descrição deve ter no máximo 100 caracteres"),
+  commercialDescription: z
+    .string()
+    .min(3, "Descrição comercial deve ter pelo menos 3 caractere")
+    .max(100, "Descrição comercial deve ter no máximo 100 caracteres"),
+  sku: z
+    .string()
+    .min(3, "SKU deve ter pelo menos 3 caractere")
+    .max(100, "SKU deve ter no máximo 100 caracteres"),
+});
+
+type SkuFormData = z.infer<typeof skuFormSchema>;
+
 interface SkuFormProps {
-  onSubmit: (skuData: {
-    description: string;
-    commercialDescription: string;
-    sku: string;
-  }) => void;
+  onSubmit: (skuData: SkuFormData) => Promise<void> | void;
   onCancel: () => void;
   props: {
     id?: string;
@@ -26,59 +41,63 @@ export function SkuForm({
   props,
   editablefields,
 }: SkuFormProps) {
-  const [formData, setFormData] = useState({
-    description: props?.description || "",
-    commercialDescription: props?.commercialDescription || "",
-    sku: props?.sku || "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<SkuFormData>({
+    resolver: zodResolver(skuFormSchema),
+    defaultValues: {
+      description: props?.description || "",
+      commercialDescription: props?.commercialDescription || "",
+      sku: props?.sku || "",
+    },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  const onSubmitForm = async (data: SkuFormData) => {
+    try {
+      await onSubmit(data);
+      reset();
+    } catch (error) {
+      console.error("Erro ao submeter formulário:", error);
+    }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.formContainer}>
         <h2>{props?.title ? props?.title : "Criar novo SKU"}</h2>
-        <form onSubmit={handleSubmit} className={styles.form}>
+        <form onSubmit={handleSubmit(onSubmitForm)} className={styles.form}>
           <div className={styles.field}>
             <label htmlFor="description">Descrição:</label>
             <input
               type="text"
               id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              required
-              className={styles.input}
+              {...register("description")}
+              className={`${styles.input} ${
+                errors.description ? styles.inputError : ""
+              }`}
               disabled={
                 editablefields ? !editablefields.includes("description") : false
               }
+              maxLength={100}
             />
+            {errors.description && (
+              <span className={styles.errorText}>
+                {errors.description.message}
+              </span>
+            )}
           </div>
 
           <div className={styles.field}>
             <label htmlFor="commercialDescription">Descrição Comercial:</label>
             <textarea
               id="commercialDescription"
-              name="commercialDescription"
-              value={formData.commercialDescription}
-              onChange={handleChange}
-              required
-              className={styles.textarea}
+              {...register("commercialDescription")}
+              className={`${styles.textarea} ${
+                errors.commercialDescription ? styles.inputError : ""
+              }`}
               maxLength={100}
               rows={3}
               disabled={
@@ -87,6 +106,11 @@ export function SkuForm({
                   : false
               }
             />
+            {errors.commercialDescription && (
+              <span className={styles.errorText}>
+                {errors.commercialDescription.message}
+              </span>
+            )}
           </div>
 
           <div className={styles.field}>
@@ -94,15 +118,18 @@ export function SkuForm({
             <input
               type="text"
               id="sku"
-              name="sku"
-              value={formData.sku}
-              onChange={handleChange}
-              required
-              className={styles.input}
+              {...register("sku")}
+              className={`${styles.input} ${
+                errors.sku ? styles.inputError : ""
+              }`}
               disabled={
                 editablefields ? !editablefields.includes("sku") : false
               }
+              maxLength={100}
             />
+            {errors.sku && (
+              <span className={styles.errorText}>{errors.sku.message}</span>
+            )}
           </div>
 
           <div className={styles.buttons}>
@@ -113,13 +140,22 @@ export function SkuForm({
                 e.stopPropagation();
                 onCancel();
               }}
+              disabled={isSubmitting}
             >
               Cancelar
             </button>
             {(editablefields && editablefields.length > 0) ||
             props.create === true ? (
-              <button type="submit" className={styles.submitButton}>
-                {props?.submitLabel ? props?.submitLabel : "Criar SKU"}
+              <button
+                type="submit"
+                className={styles.submitButton}
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? "Salvando..."
+                  : props?.submitLabel
+                  ? props?.submitLabel
+                  : "Criar SKU"}
               </button>
             ) : null}
           </div>
