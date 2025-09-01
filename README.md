@@ -1,10 +1,7 @@
 ## Possiveis Melhorias
 
-- Aumentar a cobertura dos testes;
-- Terminar de resolver todos os lint's;
-- Criar documentação / style guide;
-- Melhorar a responsividade do modal;
-- Criar tratamento de erros
+- Aumentar a cobertura dos testes (Devido ao tempo realizei apenas alguns testes dos componentes principais);
+- Criar tratamento de erros (Criar um modal de error que recebe a mensagem do erro e aparece sempre que vier erro do backend. Devido ao tempo não consegui implementar);
 
 ## 🚀 Como Executar
 
