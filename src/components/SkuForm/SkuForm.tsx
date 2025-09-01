@@ -15,6 +15,7 @@ interface SkuFormProps {
     sku?: string;
     title: string;
     submitLabel: string;
+    create?: boolean;
   };
   editablefields?: string[];
 }
@@ -115,7 +116,8 @@ export function SkuForm({
             >
               Cancelar
             </button>
-            {editablefields && editablefields.length > 0 ? (
+            {(editablefields && editablefields.length > 0) ||
+            props.create === true ? (
               <button type="submit" className={styles.submitButton}>
                 {props?.submitLabel ? props?.submitLabel : "Criar SKU"}
               </button>

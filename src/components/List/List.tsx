@@ -29,7 +29,8 @@ export function List(props: {
     if (sku.length === 0) {
       result = await listSku();
     } else {
-      result = [await searchBySku(sku)];
+      const response = await searchBySku(sku);
+      if (response) result = [response];
     }
     setList(result);
     setLoading(false);

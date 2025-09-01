@@ -3,7 +3,7 @@ import styles from "./Header.module.css";
 import logo from "../../assets/logo.png";
 
 export function Header(props: {
-  onClickMyListButton: () => void;
+  onClickCreateSKU: () => void;
   onClickLogo: () => void;
 }) {
   return (
@@ -15,7 +15,7 @@ export function Header(props: {
         </div>
       </div>
 
-      <button className={styles.button} onClick={props.onClickMyListButton}>
+      <button className={styles.button} onClick={props.onClickCreateSKU}>
         <span className={styles.buttonText}>Criar SKU</span>
       </button>
     </header>

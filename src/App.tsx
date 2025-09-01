@@ -37,14 +37,11 @@ function App() {
     commercialDescription: string;
     sku: string;
   }) {
+    setLoading(true);
     try {
-      setLoading(true);
       await createSku(skuData);
       setShowSkuForm(false);
       await fetchData();
-    } catch (error) {
-      console.error("Erro ao criar SKU:", error);
-      alert("Erro ao criar SKU. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -57,7 +54,7 @@ function App() {
           window.history.pushState({}, "", "/");
           fetchData();
         }}
-        onClickMyListButton={() => setShowSkuForm(true)}
+        onClickCreateSKU={() => setShowSkuForm(true)}
       />
       <div className={styles.content}>
         {loading ? <LoadingSVG /> : <List list={data} />}
@@ -70,6 +67,7 @@ function App() {
           props={{
             title: "Criar Nova SKU",
             submitLabel: "Criar SKU",
+            create: true,
           }}
         />
       )}
