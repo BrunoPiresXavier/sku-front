@@ -1,0 +1,12 @@
+.listHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.title {
+  color: white;
+  font-family: "Inter", sans-serif;
+  margin-bottom: 0.5rem;
+}

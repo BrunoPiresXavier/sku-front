@@ -1,0 +1,32 @@
+.searchContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  width: 13.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: #4b5563 1px solid;
+  padding-left: 2.5rem;
+  font-size: 0.9rem;
+  background-color: #374151;
+  color: white;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.8rem;
+  color: #9ca3af;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+@media (max-width: 360px) {
+  .header .logoAndTitle h1 {
+    display: none;
+  }
+}

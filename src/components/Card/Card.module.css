@@ -1,0 +1,133 @@
+.card {
+  background-color: #1f2937;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  min-height: 5rem;
+  font-family: "Inter", sans-serif;
+}
+
+.card:hover {
+  background-color: #374151;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.card:first-child {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.card:last-child {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.card:not(:last-child) {
+  border-bottom: #4b5563 1px solid;
+}
+
+.card .leftCard {
+  display: flex;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.card .leftCard .cardLeftContent {
+  padding-left: 1rem;
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.card .leftCard .cardLeftContent .skuViewers {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.card .leftCard .cardLeftContent .skuTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 5px 5px 5px 0;
+  max-width: 50rem;
+}
+
+@media (max-width: 600px) {
+  .card .leftCard .cardLeftContent .skuTitle {
+    display: none;
+  }
+}
+
+.card .leftCard .cardLeftContent .skuCategory {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 5px 5px 5px 0;
+  max-width: 30rem;
+}
+
+.card .leftCard .cardLeftContent h3 {
+  font-size: 1.5rem;
+  font-weight: 100;
+  color: white;
+}
+
+.card .leftCard .cardLeftContent p {
+  color: #9ca3af;
+}
+
+.card .platform {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card .platform p {
+  color: rgb(214, 214, 214);
+  padding: 0.2rem 0.5rem;
+  border-radius: 16px;
+}
+
+.statusOnline {
+  background-color: #14532d;
+  color: #d6d6d6;
+}
+
+.status {
+  background-color: #4b5563;
+  color: #d6d6d6;
+}
+
+.card .add {
+  color: #d6d6d6;
+  background-color: #374151;
+  border: #9ca3af 1px solid;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  gap: 0.3rem;
+}
+
+@media (max-width: 600px) {
+  .card .add {
+    display: none;
+  }
+}
+
+.card .add:hover {
+  background-color: #4b5563;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.card .add {
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
